@@ -26,7 +26,7 @@ const SUBMIT_SURVEY = gql(/* GraphQL */ `
 `);
 
 
-export default function SurveyWidget({id}: { id: string }) {
+export default function SurveyWidget({id, locale}: { id: string, locale: 'en' | 'ar' }) {
     const {data, loading, error} = useQuery(GET_SURVEY, {variables: {id}});
     const [submit] = useMutation(SUBMIT_SURVEY);
 
@@ -54,9 +54,10 @@ export default function SurveyWidget({id}: { id: string }) {
         if (data?.survey) {
             const surveyModel = new Model(data.survey.form);
             surveyModel.onComplete.add(saveForm);
+            surveyModel.locale = locale ?? 'en';
             return surveyModel;
         }
-    }, [data?.survey]);
+    }, [data?.survey, saveForm]);
 
 
     if (loading) {

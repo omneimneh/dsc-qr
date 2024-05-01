@@ -1,6 +1,6 @@
 import React from "react";
-import Survey from "@/app/[survey]/Survey";
+import Landing from "@/app/[survey]/Landing";
 
 export default function Page({params}: { params: { survey: string } }) {
-    return <Survey id={params.survey}/>
+    return <Landing id={params.survey}/>
 }

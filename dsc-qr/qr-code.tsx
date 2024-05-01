@@ -9,10 +9,9 @@ export const Field = ({field, value, onChange, autoFocus}: FieldProps<typeof con
     const [dataUrl, setDataUrl] = useState<string>();
 
     useEffect(() => {
-        console.log(value)
-        QRCode.toDataURL(value, (err, url) => {
-            setDataUrl(url);
-        })
+        if (typeof value === "string") {
+            QRCode.toDataURL(value).then((url) => setDataUrl(url));
+        }
     }, [value]);
 
     return (

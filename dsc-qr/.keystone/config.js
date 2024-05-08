@@ -54,7 +54,14 @@ var lists = {
       name: (0, import_fields.virtual)({
         field: import_core.graphql.field({
           type: import_core.graphql.String,
-          resolve: (data) => data.form && JSON.parse(data.form).title
+          resolve: (data) => {
+            if (data.form) {
+              const title = JSON.parse(data.form).title;
+              return typeof title === "string" ? title : title && "default" in title ? title.default : "";
+            } else {
+              return "";
+            }
+          }
         }),
         ui: {
           itemView: {
@@ -166,7 +173,7 @@ var keystone_default = withAuth(
     session,
     server: {
       cors: {
-        origin: ["http://localhost:3001"]
+        origin: (_, callback) => callback(null, true)
       }
     }
   })

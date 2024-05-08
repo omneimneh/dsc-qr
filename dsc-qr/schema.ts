@@ -46,7 +46,16 @@ export const lists: Lists = {
             name: virtual({
                 field: graphql.field({
                     type: graphql.String,
-                    resolve: (data) => data.form && JSON.parse(data.form).title
+                    resolve: (data) => {
+                        if (data.form) {
+                            const title = JSON.parse(data.form).title;
+                            return typeof title === 'string'
+                                ? title : title && 'default' in title
+                                    ? title.default : "";
+                        } else {
+                            return ""
+                        }
+                    }
                 }),
                 ui: {
                     itemView: {
